@@ -1,0 +1,48 @@
+---
+- hosts: localhost
+  tags:
+    - setup
+  tasks:
+   - name: create compute instances
+     os_server:
+      state: present
+      name: "{{ openstack.instance_name_prefix }}-{{ item }}"
+      image: "{{ openstack.image }}"
+      key_name: admin
+      flavor: "{{ openstack.flavor }}"
+      wait: true
+      nics:
+         - net-id: "{{ openstack.nic_id }}"
+      security_groups: admin
+     with_sequence: start=1 end={{ openstack.servers }} format=%02x
+     register: instance
+   - name: wait for ssh connection
+     wait_for_connection:
+         delay: 60
+         timeout: 300
+
+   - name: create cinder volumes
+     os_volume:
+        display_name: "{{ openstack.instance_name_prefix }}-{{ item }}"
+        size: "{{ openstack.volume_size }}"
+        state: present
+     with_sequence: start=1 end={{ openstack.servers }} format=%02x
+     register: volume
+   - name: Attach volume to instnce
+     os_server_volume:
+         server: "{{ item.server.name }}"
+         volume: "{{ item.server.name }}"
+         state: present
+         device: /dev/vdb
+     with_items: "{{ instance.results }}"
+   - name: Add instance to inventory
+     add_host:
+         name: "{{ item.server.name }}"
+         groups: fio
+         ansible_ssh_host: "{{ item.server.public_v4 }}"
+         ansible_ssh_user: "{{ openstack.user }}"
+     with_items: "{{ instance.results }}"
+
+- hosts: fio
+  roles:
+   - fio

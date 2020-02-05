@@ -1,0 +1,14 @@
+[global]
+filename=/dev/vdb
+clocksource=clock_gettime
+kb_base=1000
+unit_base='8'
+ioengine=libaio
+size={{item.2}}
+bs={{item.1}}
+iodepth={{item.3}}
+direct=1
+numjobs={{item.4}}
+
+[{{item.0}}]
+rw={{item.0}}

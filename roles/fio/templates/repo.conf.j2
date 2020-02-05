@@ -1,0 +1,84 @@
+# INFO: OSP requires the Advanced Virtualization module
+# ACTION: dnf -y module disable virt:rhel
+# ACTION: dnf -y module enable virt:8.1
+# end substitution #
+#
+# RHEL 8.1
+#
+[rhosp-rhel-8.1-baseos]
+name=rhel8 baseos
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/BaseOS/$basearch/os/
+enabled=1
+gpgcheck=0
+
+[rhosp-rhel-8.1-baseos-debuginfo]
+name=rhel8 baseos debuginfo
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/BaseOS/$basearch/debug/tree/
+enabled=0
+gpgcheck=0
+
+[rhosp-rhel-8.1-appstream]
+name=rhel8 appstream
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/AppStream/$basearch/os/
+enabled=1
+gpgcheck=0
+
+[rhosp-rhel-8.1-appstream-debuginfo]
+name=rhel8 appstream debuginfo
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/AppStream/$basearch/debug/tree/
+enabled=0
+gpgcheck=0
+
+[rhosp-rhel-8.1-ha]
+name=Red Hat Enterprise Linux $releasever - $basearch - HA
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/HighAvailability/$basearch/os/
+enabled=1
+gpgcheck=0
+
+[rhosp-rhel-8.1-ha-debuginfo]
+name=Red Hat Enterprise Linux $releasever - $basearch - HA - debuginfo
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/HighAvailability/$basearch/debug/tree/
+enabled=0
+gpgcheck=0
+
+[rhosp-rhel-8.1-av]
+name=Red Hat Enterprise Linux Advanced Virtualization $releasever - $basearch
+#baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/pulp/content/beta/layered/rhel8/$basearch/advanced-virt/os/
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/composes/nightly/rhel-8/ADVANCED-VIRT-8/latest-ADVANCED-VIRT-8.1.0-RHEL-8/compose/Advanced-virt/$basearch/os
+enabled=1
+gpgcheck=0
+
+[rhosp-rhel-8.1-ansible]
+name=Red Hat Enterprise Linux Ansible $releasever - $basearch
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/pulp/content/dist/layered/rhel8/$basearch/ansible/2.8/os/
+enabled=1
+gpgcheck=0
+
+[rhosp-rhel-8.1-fdp]
+name=Red Hat Enterprise Linux Fast Datapath $releasever - $basearch
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/pulp/content/dist/layered/rhel8/$basearch/fast-datapath/os/
+enabled=1
+gpgcheck=0
+
+
+# Content for rebuilding RHEL - should not be required;
+# enable only for debugging repoclosure / dnf install issues
+[rhosp-rhel-8.1-crb]
+name=Red Hat Enterprise Linux $releasever - $basearch - CRB
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/CRB/$basearch/os/
+enabled=0
+gpgcheck=0
+
+[rhosp-rhel-8.1-crb-debuginfo]
+name=Red Hat Enterprise Linux $releasever - $basearch - CRB - Debuginfo
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rhel-8/rel-eng/updates/RHEL-8/RHEL-8.1.1-updates-20200116.1/compose/CRB/$basearch/debug/tree/
+enabled=0
+gpgcheck=0
+
+# RHEL 8.1 override repo
+[rhosp-rhel-8.1-image-build-override]
+name=RHEL 8.1 Override
+baseurl=http://rhos-qe-mirror-rdu2.usersys.redhat.com/rcm-guest/puddles/OpenStack/RHEL-8.1-image-build-override/latest/$basearch
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1

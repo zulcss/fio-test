@@ -1,0 +1,56 @@
+---
+- name: Gather data about the instances
+  os_server_facts:
+     cloud: overcloud
+
+- name: Create the fio directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+   - [ "~/fio/logs", "~/fio/jobs"]
+
+- name: Remove stale client.hosts
+  file:
+    path: ~/fio/client.hosts
+    state: absent
+
+- name: Create the client.hosts
+  template:
+     src: servers.j2
+     dest: ~/fio/client.hosts
+
+- name: Create fio job configs
+  template:
+     src: job.j2
+     dest: "~/fio/jobs/fiojob-{{ item.0 }}-{{ item.1 }}"
+  with_nested:
+    - "{{ workload.jobs }}"
+    - "{{ workload.bs }}"
+    - "{{ workload.filesize }}"
+    - "{{ workload.iodepth }}"
+    - "{{ workload.numjobs }}"
+
+- name: Create fio results directory
+  file:
+    path: "~/fio/logs/fiojob-{{ item.0 }}-{{item.1}}"
+    state: directory
+  with_nested:
+    - "{{ workload.jobs }}"
+    - "{{ workload.bs }}"
+
+- name: Set the fio output file
+  set_fact:
+    fio_output: "/tmp/fiojob-{{ item.0 }}-{{item.1}}/fio-results.json"
+  with_nested:
+    - "{{ workload.jobs }}"
+    - "{{ workload.bs }}"
+
+#fio --client=client.hosts --output={{fio_output}} {{item}}
+- name: Run fio
+  shell: |
+    fio --client=client.hosts --output=/tmp/output.json {{item}}
+  args:
+    chdir: ~/fio
+  with_fileglob:
+     - "~/fio/jobs/*"

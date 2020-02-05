@@ -1,0 +1,17 @@
+---
+- name: create repo
+  template:
+     src: repo.conf.j2
+     dest: /etc/yum.repos.d/rhos-release-rhel-8.1.repo
+  become: yes
+
+- name: Install fio
+  yum:
+    name: fio
+    state: present
+  become: yes
+
+- name: Run the fio server
+  shell: |
+    fio --server --daemonize=/var/run/fio-svr.pid > /dev/null
+  become: yes

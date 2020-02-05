@@ -1,0 +1,3 @@
+{% for server in openstack_servers %}
+{{ server.public_v4 }}
+{% endfor %}

@@ -1,0 +1,25 @@
+---
+openstack:
+  servers: 1
+  volume_size: 2
+  instance_name_prefix: fio-test
+  nic_id: "4ca342f9-1b58-4592-a686-1ce1186df8d8"
+  image: rhel81
+  user: cloud-user
+  flavor: "m1.medium"
+
+workload:
+    samples: 1
+    jobs:
+      - read
+    bs:
+      - 4KiB
+    numjobs:
+      - 1
+    iodepth: 4
+    log_sample_rate: 1000
+    read_runtime: 60
+    read_ramp_time: 5
+    filesize: 1GiB
+    fio_path: /dev/vdb
+    log_sample_rate: 1000
